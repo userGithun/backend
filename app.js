@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
-const port = 2200;
+const port = 2300;
 const web = require('./route/web');
 const connectDB = require('./data base/connect');
-const { url } = require('inspector');
+
 
 
 app.use(express.urlencoded({ extended: true }));
