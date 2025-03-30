@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://img.freepik.com/free-photo/panoramic-view-sunset-night_23-2148933764.jpg') no-repeat center center/cover;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .calendar {
+            width: 90%;
+            max-width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            backdrop-filter: blur(5px);
+        }
+        .date {
+            font-size: 40px;
+            font-weight: bold;
+            color: #ffffff70;
+        }
+        .popup {
+            font-size: 16px;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: black;
+            padding: 6px;
+            border-radius: 5px;
+        }
+        .message {
+            font-size: 18px;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #fff;
+            padding: 0 10px;
+            text-shadow: 0 0 10px rgba(27, 27, 25, 2.8);
+        }
+        .glow-button {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px;
+            background: linear-gradient(to right,#22212f,#07060c);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #22212f, 0 0 40px #07060c;
+            animation: glow 1.5s infinite alternate;
+            margin-top: 20px;
+        }
+        .glow-button:hover {
+            transform: scale(1.1);
+            transition: all .3s ease-in-out;
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #22212f, 0 0 40px #07060c; }
+            100% { box-shadow: 0 0 20px #38373b, 0 0 60px #868596; }
+        }
+        .stars {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body style="background: url(image/for\ 2nd.webp); background-position: center; background-size: cover; background-repeat: no-repeat;">
+    <canvas class="stars" id="stars"></canvas>
+    <div class="calendar">
+        <div class="date">31</div>
+        <div class="popup">🎉 Heyy! It's your birthday date! 🎂✨</div>
+    </div>
+    <div class="message">Are you ready to celebrate your birthday? 🎊</div>
+    <button class="glow-button" onclick="goToNextPage()">Yes! Let's Celebrate 🎉</button>
+    <div class="message" style="margin-top: 10px; font-size: 16px; ">
+        I hope tuje pasand aaye ! <br>
+       chal ab Jo Buttom glow hora h usse PRESS kr! 🚀
+    </div>
+    <script>
+        function goToNextPage() {
+            window.location.href = "/contact";
+        }
+        const canvas = document.getElementById('stars');
+        const ctx = canvas.getContext('2d');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        let stars = [];
+        for (let i = 0; i < 100; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5 + 0.5,
+                opacity: Math.random() * 0.5 + 0.5,
+                twinkleSpeed: Math.random() * 0.02 + 0.01
+            });
+        }
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.fill();
+                star.opacity += star.twinkleSpeed;
+                if (star.opacity >= 1 || star.opacity <= 0.5) {
+                    star.twinkleSpeed *= -1;
+                }
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+    </script>
+</body>
+</html>

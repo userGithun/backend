@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration 🎂🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://img.freepik.com/free-photo/soft-bokeh-lights-defocused-abstract-background_103077-1722.jpg') no-repeat center center/cover;
+            text-align: center;
+            overflow: hidden;
+        }
+        .message {
+            font-size: 24px;
+            font-weight: bold;
+            color: #bf7d87;
+            text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.8);
+            animation: glow 1.5s infinite alternate;
+            display: none;
+        }
+        @keyframes glow {
+            0% { text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.8); }
+            100% { text-shadow: 2px 2px 16px rgba(255, 255, 0, 1); }
+        }
+        .cake-container {
+            position: relative;
+            width: 90%;
+            max-width: 250px;
+            margin-top: 20px;
+        }
+        .cake {
+            width: 100%;
+        }
+        .candles {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .candle {
+            width: 8px;
+            height: 35px;
+            background: red;
+            position: relative;
+            border-radius: 3px;
+        }
+        .flame {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 15px;
+            background: orange;
+            border-radius: 50%;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+        .blow-button {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 18px;
+            background: linear-gradient(to right, #99d4b6, #84adbf);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 0 10px #84adbf, 0 0 20px #99d4b6;
+        }
+        .blow-button:hover {
+            transform: scale(1.05);
+            transition: all .3s ease-in-out;
+        }
+        .confetti, .hearts {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            display: none;
+        }
+    </style>
+</head>
+<body style="background: url(image/273280dfa1dd4bf9d6cbc99cb74583d8.jpg); background-position: center; background-size: cover; background-repeat: no-repeat;">
+    <% if(msg.length> 0) { %>
+        <div style="background-color: #99d4b6; border: 2px #84adbf ; padding: 2px; border-radius: 5px; margin: 10px; font-size: 20px; color: #333; text-align: center; box-shadow: 0 0 10px #84adbf, 0 0 20px #99d4b6;">
+            <!--To print-->
+            <%= msg %>
+        </div>
+        <% } %>
+        <% if(msg1.length> 0) { %>
+            <div style="background-color: #d49999; border: 2px #bf8484 ; padding: 2px; border-radius: 5px; margin: 10px; font-size: 20px; color: #333; text-align: center; box-shadow: 0 0 10px #84adbf, 0 0 20px #99d4b6;">
+                <!--To print-->
+                <%= msg1 %>
+            </div>
+            <% } %>
+    <div class="message" id="birthday-message">Happiee Birthdayy, Dr.Ashthana! 🎂💖</div>
+    <div class="cake-container">
+        <img src="https://t3.ftcdn.net/jpg/07/43/88/88/360_F_743888840_wR0NwbXeqD2Ie4gFU27EAtwHwj6ONTcA.jpg" alt="Cake" class="cake">
+        <div class="candles">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+    </div>
+    <form action="/insertMessage" method="post">
+        <label for="">Khuch kehna H?</label>
+        <input type="text" name="message" placeholder="Type here..." style="width: 200px; padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+        <br><br>
+        <button style="    background-color: #bf7d87;
+        width: 85px;
+        padding: 5px;
+        color: white;
+        border-radius: 5px;
+        border: 1px solid #ccc;"  type="submit">Submit</button>
+    </form>
+    <button class="blow-button" onclick="blowCandles()">Fhuk Marr Candles ko🎉</button>
+    <canvas class="confetti" id="confetti"></canvas>
+    <canvas class="hearts" id="hearts"></canvas>
+    <!-- <audio id="bg-music" loop>
+        <source src="https://pixabay.com/music/special-occasions-happy-birthday-to-you-background-piano-music-for-the-holiday-37-sec-316323/" type="audio/mp3">
+    </audio> -->
+    <br>
+    <audio controls style="z-index:1;">
+        <source  src="image/happy-birthday-254480.mp3" type="audio/mp3">
+    </audio>
+    <script>
+        document.getElementById('bg-music').play();
+        function blowCandles() {
+            document.querySelectorAll('.flame').forEach(flame => {
+                flame.style.opacity = '0';
+            });
+            setTimeout(() => {
+                document.getElementById('birthday-message').style.display = 'block';
+            }, 200);
+            startConfetti();
+            startHearts();
+        }
+        function startConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            document.querySelector('.confetti').style.display = 'block';
+            let confetti = [];
+            for (let i = 0; i < 120; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 4 + 1,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    speed: Math.random() * 3 + 1.5
+                });
+            }
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confetti.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.y += p.speed;
+                    if (p.y > canvas.height) {
+                        p.y = 0;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+                requestAnimationFrame(drawConfetti);
+            }
+            drawConfetti();
+        }
+        function startHearts() {
+            const canvas = document.getElementById('hearts');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            document.querySelector('.hearts').style.display = 'block';
+            let hearts = [];
+            for (let i = 0; i < 50; i++) {
+                hearts.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 20 + 10,
+                    speed: Math.random() * 2 + 1
+                });
+            }
+            function drawHearts() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                hearts.forEach(h => {
+                    ctx.font = `${h.size}px Arial`;
+                    ctx.fillText('❤️', h.x, h.y);
+                    h.y -= h.speed;
+                    if (h.y < 0) h.y = canvas.height;
+                });
+                requestAnimationFrame(drawHearts);
+            }
+            drawHearts();
+        }
+        
+    </script>
+</body>
+</html>
